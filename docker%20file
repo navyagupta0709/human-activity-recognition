@@ -1,0 +1,27 @@
+# Start from a Python image suitable for machine learning
+FROM python:3.10-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the dependency file and install Python packages
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the trained model and the application script
+COPY random_forest_har_model.joblib .
+COPY app.py .
+
+# Expose the port where the application will run (e.g., 7860 for Gradio/Streamlit or 8080 for FastAPI/Flask)
+EXPOSE 7860
+
+# Command to run the application when the container starts
+# We use Python and a lightweight web server (e.g., Gradio/Streamlit/Flask) for the demo.
+# If you decide to use Gradio/Streamlit, the app.py should contain the interface logic.
+# If you use Flask/FastAPI, adjust this command accordingly.
+
+# Assuming you will switch to Gradio or Streamlit for the easiest deployment:
+CMD ["python", "app.py"]
+
+# OR, if you use a tool like Streamlit:
+# CMD ["streamlit", "run", "app.py", "--server.port", "7860", "--server.address", "0.0.0.0"]
